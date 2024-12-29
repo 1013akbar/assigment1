@@ -1,33 +1,67 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
 
-class Student extends Person {
-    private static int idCounter = 1;
-    private int studentID;
+public class Student extends Person {
+    private static int id = 1;
+    private final int studentID;
     private List<Integer> grades;
 
-    public Student(String name, String surname, int age, boolean gender) {
-        super(name, surname, age, gender);
-        this.studentID = idCounter++;
+
+    //    Constructors
+    public Student() {
+        super();
+        this.studentID = id++;
         this.grades = new ArrayList<>();
     }
 
-    public void addGrade(int grade) {
-        grades.add(grade);
+    public Student(String name, String surname, int age, boolean gender){
+        super(name, surname, age, gender);
+        this.studentID = id++;
+        this.grades = new ArrayList<>();
     }
 
-    public double calculateGPA() {
-        if (grades.isEmpty()) return 0.0;
-        int total = 0;
-        for (int grade : grades) {
-            total += grade;
-        }
-        return (double) total / grades.size();
+    public Student(String name, String surname, int age, boolean gender, int studentID) {
+        super(name, surname, age, gender);
+        this.studentID = id++;
+        this.grades = new ArrayList<>();
     }
 
+    public Student(String name, String surname, int age, boolean gender, List<Integer> grades) {
+        super(name, surname, age, gender);
+        this.studentID = id++;
+        this.grades = grades;
+    }
+
+
+    //    Accessors and Mutators
+    public void setGrades(List<Integer> grades) {
+        this.grades = grades;
+    }
+
+    public List<Integer> getGrades() {
+        return grades;
+    }
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    //    Methods
     @Override
     public String toString() {
-        return super.toString() + " I am a student with ID " + studentID + ".";
+        return super.toString() + " I am a student with ID: " + studentID;
+    }
+
+    public void addGrade(int grade) {
+        this.grades.add(grade);
+    }
+
+    public int calculateGPA() {
+        int sum = 0, count = 0;
+        for(int grade : grades) {
+            sum += grade;
+            count += 1;
+        }
+        return sum / count;
     }
 }

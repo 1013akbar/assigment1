@@ -1,22 +1,30 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-class School {
+public class School {
     private List<Person> members;
 
+    //    Constructors
     public School() {
-        members = new ArrayList<>();
+        this.members = new ArrayList<>();
+    }
+    public School(List<Person> members) {
+        this.members = members;
+    }
+
+    //    Accessor and Mutator
+    public List<Person> getMembers() {
+        return members;
     }
 
     public void addMember(Person person) {
-        members.add(person);
+        this.members.add(person);
     }
 
+    //  Methods
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Person member : members) {
-            sb.append(member.toString()).append("\n");
-        }
-        return sb.toString();
+        return members.toString();
     }
+
 }

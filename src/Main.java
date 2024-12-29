@@ -1,42 +1,69 @@
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
-        School school = new School();
-        File studentsFile = new File("src/student.txt");
-        Scanner studentScanner = new Scanner(studentsFile);
+    public static void main(String[] args) throws Exception {
+        File studentFile = new File("src/student.txt");
+        File teacherFile = new File("src/teacher.txt");
+        Scanner studentScanner = new Scanner(studentFile);
+        Scanner teacherScanner = new Scanner(teacherFile);
+
+        ArrayList<Student> students = new ArrayList<>();
+
         while (studentScanner.hasNextLine()) {
-            String[] studentData = studentScanner.nextLine().split(" ");
-            Student student = new Student(
-                    studentData[0], studentData[1], Integer.parseInt(studentData[2]),
-                    parseGender(studentData[3])
-            );
-            for (int i = 4; i < studentData.length; i++) {
-                student.addGrade(Integer.parseInt(studentData[i]));
+            String line = studentScanner.nextLine();
+            Scanner lineScanner = new Scanner(line);
+
+            String name = lineScanner.next();
+            String surname = lineScanner.next();
+            int age = Integer.parseInt(lineScanner.next());
+            boolean gender = lineScanner.next().equals("Male");
+
+            Student student = new Student(name, surname, age, gender);
+
+            while (lineScanner.hasNextInt()) {
+                student.addGrade(lineScanner.nextInt());
             }
-            school.addMember(student);
-        }
-        studentScanner.close();
 
-        File teachersFile = new File("src/teacher.txt");
-        Scanner teacherScanner = new Scanner(teachersFile);
+
+            students.add(student);
+        }
+
+        ArrayList<Teacher> teachers = new ArrayList<>();
+
         while (teacherScanner.hasNextLine()) {
-            String[] teacherData = teacherScanner.nextLine().split(" ");
-            Teacher teacher = new Teacher(
-                    teacherData[0], teacherData[1], Integer.parseInt(teacherData[2]),
-                    parseGender(teacherData[3]), teacherData[4],
-                    Integer.parseInt(teacherData[5]), Integer.parseInt(teacherData[6])
-            );
-            school.addMember(teacher);
+            String line = teacherScanner.nextLine();
+            Scanner lineScanner = new Scanner(line);
+
+            String name = lineScanner.next();
+            String surname = lineScanner.next();
+            int age = Integer.parseInt(lineScanner.next());
+            boolean gender = lineScanner.next().equals("Male");
+            String subject = lineScanner.next();
+            int years = Integer.parseInt(lineScanner.next());
+            int salary = Integer.parseInt(lineScanner.next());
+
+            Teacher teacher = new Teacher(name, surname, age, gender, subject, years, salary);
+            teachers.add(teacher);
         }
-        teacherScanner.close();
 
-        System.out.println("School Members:");
-        System.out.println(school);
-    }
+        School hogwarts = new School();
 
-    private static boolean parseGender(String gender) {
-        return gender.equalsIgnoreCase("Male");
+        for (Teacher teacher : teachers) {
+            if ((teacher.getYearsOfExperience() >= 10) && (teacher.getYearsOfExperience() < 20)) {
+                teacher.giveRaise(10);
+            } else if ((teacher.getYearsOfExperience() >= 20) && (teacher.getYearsOfExperience() < 40)) {
+                teacher.giveRaise(25);
+            } else if (teacher.getYearsOfExperience() >= 40) {
+                teacher.giveRaise(50);
+            }
+            hogwarts.addMember(teacher);
+        }
+        for (Student student : students) {
+            hogwarts.addMember(student);
+        }
+
+        System.out.println(hogwarts);
     }
 }
